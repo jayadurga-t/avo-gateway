@@ -7,6 +7,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.function.Function;
 
 @SpringBootApplication
@@ -24,13 +25,14 @@ public class GatewayserverApplication {
 							@Override
 							public Buildable<Route> apply(PredicateSpec predicateSpec) {
 								return predicateSpec.path("/avobank/accounts/**")
-										.filters(new Function<GatewayFilterSpec, UriSpec>() {
-											@Override
-											public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
-												return gatewayFilterSpec.rewritePath("/avobank/accounts/(?<segment>.*)","/${segment}");
-											}
-										})
-										.uri("lb://ACCOUNTS");
+													.filters(new Function<GatewayFilterSpec, UriSpec>() {
+														@Override
+														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
+															return gatewayFilterSpec.rewritePath("/avobank/accounts/(?<segment>.*)","/${segment}")
+																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString());
+														}
+													})
+													.uri("lb://ACCOUNTS");
 							}
 						}
 				)
@@ -41,7 +43,8 @@ public class GatewayserverApplication {
 													.filters(new Function<GatewayFilterSpec, UriSpec>() {
 														@Override
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
-															return gatewayFilterSpec.rewritePath("/avobank/cards/(?<segment>.*)","/${segment}");
+															return gatewayFilterSpec.rewritePath("/avobank/cards/(?<segment>.*)","/${segment}")
+																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString());
 														}
 													})
 													.uri("lb://CARDS");
@@ -52,13 +55,14 @@ public class GatewayserverApplication {
 							@Override
 							public Buildable<Route> apply(PredicateSpec predicateSpec) {
 								return predicateSpec.path("/avobank/loans/**")
-										.filters(new Function<GatewayFilterSpec, UriSpec>() {
-											@Override
-											public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
-												return gatewayFilterSpec.rewritePath("/avobank/loans/(?<segment>.*)","/${segment}");
-											}
-										})
-										.uri("lb://LOANS");
+													.filters(new Function<GatewayFilterSpec, UriSpec>() {
+														@Override
+														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
+															return gatewayFilterSpec.rewritePath("/avobank/loans/(?<segment>.*)","/${segment}")
+																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString());
+														}
+													})
+													.uri("lb://LOANS");
 							}
 						}
 				)
