@@ -31,13 +31,13 @@ public class GatewayserverApplication {
 														@Override
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
 															return gatewayFilterSpec.rewritePath("/avobank/accounts/(?<segment>.*)","/${segment}")
-																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
-																						@Override
-																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
-																							config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contactSupport");
-																						}
-																					});
+																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString());
+//																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
+//																						@Override
+//																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
+//																							config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contactSupport");
+//																						}
+//																					});
 														}
 													})
 													.uri("lb://ACCOUNTS");
@@ -52,13 +52,13 @@ public class GatewayserverApplication {
 														@Override
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
 															return gatewayFilterSpec.rewritePath("/avobank/cards/(?<segment>.*)","/${segment}")
-																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
-																						@Override
-																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
-																							config.setName("cardsCircuitBreaker").setFallbackUri("forward:/contactSupport");
-																						}
-																					});
+																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString());
+//																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
+//																						@Override
+//																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
+//																							config.setName("cardsCircuitBreaker").setFallbackUri("forward:/contactSupport");
+//																						}
+//																					});
 														}
 													})
 													.uri("lb://CARDS");
@@ -73,13 +73,13 @@ public class GatewayserverApplication {
 														@Override
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
 															return gatewayFilterSpec.rewritePath("/avobank/loans/(?<segment>.*)","/${segment}")
-																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
-																						@Override
-																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
-																							config.setName("loansCircuitBreaker").setFallbackUri("forward:/contactSupport");
-																						}
-																					});
+																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString());
+//																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
+//																						@Override
+//																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
+//																							config.setName("loansCircuitBreaker").setFallbackUri("forward:/contactSupport");
+//																						}
+//																					});
 														}
 													})
 													.uri("lb://LOANS");
