@@ -35,20 +35,20 @@ public class GatewayserverApplication {
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
 															return gatewayFilterSpec.rewritePath("/avobank/accounts/(?<segment>.*)","/${segment}")
 																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-//																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
-//																						@Override
-//																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
-//																							config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contactSupport");
-//																						}
-//																					});
-																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
 																						@Override
-																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
-																							retryConfig.setRetries(3)
-																										.setMethods(HttpMethod.GET)
-																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
+																							config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contactSupport");
 																						}
 																					});
+//																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+//																						@Override
+//																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
+//																							retryConfig.setRetries(3)
+//																										.setMethods(HttpMethod.GET)
+//																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+//																						}
+//																					});
 														}
 													})
 													.uri("lb://ACCOUNTS");
@@ -64,20 +64,20 @@ public class GatewayserverApplication {
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
 															return gatewayFilterSpec.rewritePath("/avobank/cards/(?<segment>.*)","/${segment}")
 																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-//																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
-//																						@Override
-//																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
-//																							config.setName("cardsCircuitBreaker").setFallbackUri("forward:/contactSupport");
-//																						}
-//																					});
-																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
 																						@Override
-																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
-																							retryConfig.setRetries(3)
-																										.setMethods(HttpMethod.GET)
-																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
+																							config.setName("cardsCircuitBreaker").setFallbackUri("forward:/contactSupport");
 																						}
 																					});
+//																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+//																						@Override
+//																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
+//																							retryConfig.setRetries(3)
+//																										.setMethods(HttpMethod.GET)
+//																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+//																						}
+//																					});
 														}
 													})
 													.uri("lb://CARDS");
@@ -93,20 +93,20 @@ public class GatewayserverApplication {
 														public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
 															return gatewayFilterSpec.rewritePath("/avobank/loans/(?<segment>.*)","/${segment}")
 																					.addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-//																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
-//																						@Override
-//																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
-//																							config.setName("loansCircuitBreaker").setFallbackUri("forward:/contactSupport");
-//																						}
-//																					});
-																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+																					.circuitBreaker(new Consumer<SpringCloudCircuitBreakerFilterFactory.Config>() {
 																						@Override
-																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
-																							retryConfig.setRetries(3)
-																										.setMethods(HttpMethod.GET)
-																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
+																							config.setName("loansCircuitBreaker").setFallbackUri("forward:/contactSupport");
 																						}
 																					});
+//																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+//																						@Override
+//																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
+//																							retryConfig.setRetries(3)
+//																										.setMethods(HttpMethod.GET)
+//																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+//																						}
+//																					});
 														}
 													})
 													.uri("lb://LOANS");
