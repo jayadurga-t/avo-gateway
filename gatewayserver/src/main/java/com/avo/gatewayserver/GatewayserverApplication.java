@@ -7,13 +7,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.RetryGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.SpringCloudCircuitBreakerFilterFactory;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -45,15 +49,22 @@ public class GatewayserverApplication {
 																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
 																							config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contactSupport");
 																						}
+																					})
+																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+																						@Override
+																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
+																							retryConfig.setRetries(3)
+																										.setMethods(HttpMethod.GET)
+																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+																						}
+																					})
+																					.requestRateLimiter(new Consumer<RequestRateLimiterGatewayFilterFactory.Config>() {
+																						@Override
+																						public void accept(RequestRateLimiterGatewayFilterFactory.Config config) {
+																							config.setRateLimiter(redisRateLimiter())
+																									.setKeyResolver(userKeyResolver());
+																						}
 																					});
-//																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
-//																						@Override
-//																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
-//																							retryConfig.setRetries(3)
-//																										.setMethods(HttpMethod.GET)
-//																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
-//																						}
-//																					});
 														}
 													})
 													.uri("lb://ACCOUNTS");
@@ -74,15 +85,22 @@ public class GatewayserverApplication {
 																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
 																							config.setName("cardsCircuitBreaker").setFallbackUri("forward:/contactSupport");
 																						}
+																					})
+																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+																						@Override
+																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
+																							retryConfig.setRetries(3)
+																										.setMethods(HttpMethod.GET)
+																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+																						}
+																					})
+																					.requestRateLimiter(new Consumer<RequestRateLimiterGatewayFilterFactory.Config>() {
+																						@Override
+																						public void accept(RequestRateLimiterGatewayFilterFactory.Config config) {
+																							config.setRateLimiter(redisRateLimiter())
+																									.setKeyResolver(userKeyResolver());
+																						}
 																					});
-//																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
-//																						@Override
-//																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
-//																							retryConfig.setRetries(3)
-//																										.setMethods(HttpMethod.GET)
-//																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
-//																						}
-//																					});
 														}
 													})
 													.uri("lb://CARDS");
@@ -103,15 +121,22 @@ public class GatewayserverApplication {
 																						public void accept(SpringCloudCircuitBreakerFilterFactory.Config config) {
 																							config.setName("loansCircuitBreaker").setFallbackUri("forward:/contactSupport");
 																						}
+																					})
+																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
+																						@Override
+																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
+																							retryConfig.setRetries(3)
+																										.setMethods(HttpMethod.GET)
+																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
+																						}
+																					})
+																					.requestRateLimiter(new Consumer<RequestRateLimiterGatewayFilterFactory.Config>() {
+																						@Override
+																						public void accept(RequestRateLimiterGatewayFilterFactory.Config config) {
+																							config.setRateLimiter(redisRateLimiter())
+																									.setKeyResolver(userKeyResolver());
+																						}
 																					});
-//																					.retry(new Consumer<RetryGatewayFilterFactory.RetryConfig>() {
-//																						@Override
-//																						public void accept(RetryGatewayFilterFactory.RetryConfig retryConfig) {
-//																							retryConfig.setRetries(3)
-//																										.setMethods(HttpMethod.GET)
-//																										.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true);
-//																						}
-//																					});
 														}
 													})
 													.uri("lb://LOANS");
@@ -135,6 +160,17 @@ public class GatewayserverApplication {
 						)
 						.build()
 		);
+	}
+
+	@Bean
+	public RedisRateLimiter redisRateLimiter() {
+		return new RedisRateLimiter(1, 1, 1);
+	}
+
+	@Bean
+	KeyResolver userKeyResolver() {
+		return exchange -> Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst("user"))
+				.defaultIfEmpty("anonymous");
 	}
 
 }
