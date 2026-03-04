@@ -91,7 +91,7 @@
 				<version>3.5.1</version>
 				<configuration>
 					<to>
-						<image>jayadurga332k/${project.artifactId}:v1</image>
+						<image>jayadurga332k/${project.artifactId}:v2</image>
 					</to>
 				</configuration>
 			</plugin>
