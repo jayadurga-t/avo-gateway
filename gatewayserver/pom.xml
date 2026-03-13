@@ -66,6 +66,10 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -91,7 +95,7 @@
 				<version>3.5.1</version>
 				<configuration>
 					<to>
-						<image>jayadurga332k/${project.artifactId}:v2</image>
+						<image>jayadurga332k/${project.artifactId}:v3</image>
 					</to>
 				</configuration>
 			</plugin>
