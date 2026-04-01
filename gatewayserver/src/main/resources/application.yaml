@@ -31,6 +31,12 @@ spring:
     tags:
       application: ${spring.application.name}
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:7080/realms/master/protocol/openid-connect/certs"
+
 management:
   endpoints:
     web:
