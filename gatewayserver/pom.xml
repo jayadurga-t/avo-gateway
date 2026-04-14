@@ -114,7 +114,7 @@
 				<version>3.5.1</version>
 				<configuration>
 					<to>
-						<image>jayadurga332k/${project.artifactId}:v3</image>
+						<image>jayadurga332k/${project.artifactId}:v4</image>
 					</to>
 				</configuration>
 			</plugin>
